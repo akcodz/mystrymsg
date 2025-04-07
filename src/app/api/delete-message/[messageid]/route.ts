@@ -7,7 +7,7 @@ import { User } from "next-auth";
 
 export async function DELETE(
   req: NextRequest,
-  context: { params: { messageid: string } }
+  context: { params: Record<string, string> }
 ): Promise<NextResponse> {
   const messageId = context.params.messageid;
 
