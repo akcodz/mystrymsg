@@ -6,8 +6,8 @@ import { AuthOptions } from "../../auth/[...nextauth]/options";
 import { User } from "next-auth";
 
 export async function DELETE(
-  req: NextRequest,
-  context: { params: Record<string, string> }
+  request: NextRequest,
+  context: { params: { messageid: string } }
 ): Promise<NextResponse> {
   const messageId = context.params.messageid;
 
@@ -24,7 +24,7 @@ export async function DELETE(
     );
   }
 
-  const user: User = session.user as User;
+  const user = session.user as User;
 
   try {
     const result = await UserModel.updateOne(
@@ -36,7 +36,7 @@ export async function DELETE(
       return NextResponse.json(
         {
           status: false,
-          message: "Error in modifying messages",
+          message: "Message not found or not deleted",
         },
         { status: 400 }
       );
@@ -49,8 +49,8 @@ export async function DELETE(
       },
       { status: 200 }
     );
-  } catch (err) {
-    console.error("Error deleting message:", err);
+  } catch (error) {
+    console.error("Error deleting message:", error);
     return NextResponse.json(
       {
         status: false,
