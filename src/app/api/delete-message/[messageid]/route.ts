@@ -6,9 +6,9 @@ import { AuthOptions } from "../../auth/[...nextauth]/options";
 import { User } from "next-auth";
 
 export async function DELETE(
-  request: NextRequest,
-  context: { params: { messageid: string } }
-): Promise<NextResponse> {
+  req: NextRequest,
+  context: any // ← Let TS infer type to avoid Vercel issues
+) {
   const messageId = context.params.messageid;
 
   await dbConnect();
