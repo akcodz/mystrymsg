@@ -1,3 +1,8 @@
+export const config = {
+  runtime: "nodejs",        // Use Node.js (not Edge runtime)
+  maxDuration: 15           // Increase from 10s default
+};
+
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/models/User";
 import bcrypt from "bcryptjs"; // Optimized for serverless
