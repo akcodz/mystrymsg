@@ -18,8 +18,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { toast } from "sonner";
+import { useState } from "react";
+import { LoaderCircle } from "lucide-react";
 
 const SignIn = () => {
+  
+ const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const form = useForm({
@@ -28,21 +32,39 @@ const SignIn = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-    const response = await signIn("credentials", {
-      redirect: false,
-      identifier: data.identifier,
-      password: data.password,
-    });
-
-    if (response?.error) {
-      toast.error("Error while signing in");
-      console.log("Error while signing in:", response.error);
-    }
-    if (response?.url) {
-      toast.success("Sign in successful!");
-      router.push("/dashboard");
+    try {
+      setIsSubmitting(true);
+  
+      const response = await signIn("credentials", {
+        redirect: false,
+        identifier: data.identifier,
+        password: data.password,
+      });
+  
+      if (!response) {
+        toast.error("No response from server.");
+        return;
+      }
+  
+      if (response.error) {
+        console.error("Sign in error:", response.error);
+        toast.error(
+          response.error === "CredentialsSignin"
+            ? "Invalid email or password"
+            : "Error while signing in"
+        );
+      } else if (response.url) {
+        toast.success("Signed in successfully!");
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.error("Unexpected sign in error:", error);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 px-4">
@@ -96,11 +118,11 @@ const SignIn = () => {
               )}
             />
             <Button
-              type="submit" 
-              
-              className="w-full h-12 bg-gray-800 text-md  text-white font-semibold rounded-lg transition duration-200 flex items-center justify-center hover:bg-gray-950"
-              >
-              Sign In
+              type="submit"
+              className="w-full h-12 bg-gray-800 text-md text-white font-semibold rounded-lg transition duration-200 flex items-center justify-center hover:bg-gray-950"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? <LoaderCircle className="animate-spin mr-2" size={20} /> : "Sign Up"}
             </Button>
           </form>
         </Form>
