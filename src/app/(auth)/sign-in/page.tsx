@@ -122,7 +122,7 @@ const SignIn = () => {
               className="w-full h-12 bg-gray-800 text-md text-white font-semibold rounded-lg transition duration-200 flex items-center justify-center hover:bg-gray-950"
               disabled={isSubmitting}
             >
-              {isSubmitting ? <LoaderCircle className="animate-spin mr-2" size={20} /> : "Sign Up"}
+              {isSubmitting ? <LoaderCircle className="animate-spin mr-2" size={20} /> : "Sign In"}
             </Button>
           </form>
         </Form>

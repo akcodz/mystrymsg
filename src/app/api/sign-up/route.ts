@@ -52,10 +52,10 @@ export async function POST(request: Request) {
       await newUser.save();
     }
 
-    // Send email in background
-    sendVerification(email, username, verifyCode)
-      .then(() => console.log("✅ Verification email sent"))
-      .catch((err) => console.error("❌ Email error:", err));
+    // // Send email in background
+    // sendVerification(email, username, verifyCode)
+    //   .then(() => console.log("✅ Verification email sent"))
+    //   .catch((err) => console.error("❌ Email error:", err));
 
     console.log("⏱️ Signup took", Date.now() - startTime, "ms");
 
