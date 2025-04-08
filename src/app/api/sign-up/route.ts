@@ -6,7 +6,7 @@ export const config = {
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/models/User";
 import bcrypt from "bcryptjs"; // Optimized for serverless
-// import { sendVerification } from "@/helpers/sendVerificationEmail";
+import { sendVerification } from "@/helpers/sendVerificationEmail";
 
 export async function POST(request: Request) {
   const start = Date.now();
@@ -72,10 +72,9 @@ export async function POST(request: Request) {
     }
     console.timeEnd("💾 Save User");
 
-    // Optional: Send verification email (deferred or background)
-    // sendVerification(email, username, verifyCode)
-    //   .then(() => console.log("📧 Verification email sent"))
-    //   .catch((err) => console.error("❌ Email sending failed:", err));
+    sendVerification(email, username, verifyCode)
+      .then(() => console.log("📧 Verification email sent"))
+      .catch((err) => console.error("❌ Email sending failed:", err));
 
     console.timeEnd("📦 Total Signup");
     console.log("⏱️ Signup took", Date.now() - start, "ms");
