@@ -37,7 +37,6 @@ export async function sendVerification(email: string, username: string, verifyCo
     await transporter.sendMail(mailOptions);
     return { success: true };
   } catch (error) {
-    console.error("❌ Email send failed:", error);
     return { success: false, message: "Failed to send verification email" };
   }
 }
