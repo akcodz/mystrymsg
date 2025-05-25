@@ -45,11 +45,7 @@ export async function POST(request: Request) {
       await newUser.save();
     }
 
-    // Non-blocking, avoids timeout
-    setTimeout(() => {
-      sendVerification(email, username, verifyCode).catch(console.error);
-    }, 0);
-
+    // Non-blocking, avoids timeout/
     return Response.json(
       {
         success: true,
